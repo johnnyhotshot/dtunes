@@ -2,15 +2,20 @@
 	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>
-			Music Player
-		</title>
+		<title>Music Player</title>
 	</head>
 	<body>
 		<div id="player"></div>
+        <div class="controls">
+            <button style = "height: 30px" onclick="previousSong()"><<</button>
+            <button style = "height: 30px" id="playButton" onclick="playToggle()">❚❚</button>
+            <button style = "height: 30px" onclick="nextSong()">>></button>
+        </div>
         <br><input type="text" id="searchField">
         <button onclick="searchSong()">Play Song</button><br>
         <p id="searchMessage"></p>
+        
+        
         <script src='https://cdn.rawgit.com/jsoma/tabletop/master/src/tabletop.min.js'></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
         <script src="js/player.js"></script>

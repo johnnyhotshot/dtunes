@@ -4,6 +4,10 @@ var videoInfo = [];
 var pageTitle = document.getElementsByTagName("title")[0].innerHTML;
 var apiReady = false, spreadsheetReady = false;
 
+var previousSongs = [];
+var currentSong = -1;
+var nextSongs = [];
+
 var player;
 function onYouTubeIframeAPIReady() {
     apiReady = true;
@@ -13,6 +17,10 @@ function onYouTubeIframeAPIReady() {
 function setupPlayer() {
     player = new YT.Player('player', {
         videoId: videoInfo[Math.floor(Math.random()*videoInfo.length)][1],
+        height: '40',
+        playerVars: {
+            controls: 0
+        },
         events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
@@ -21,9 +29,17 @@ function setupPlayer() {
 }
 
 function playSong(index) {
+    if(nextSongs.length > 0) {
+        index = nextSongs[0];
+        nextSongs.splice(0,1);
+    }
+    if(currentSong > 0) {
+        previousSongs.splice(0,0,currentSong);
+    }
+    currentSong = index;
     song = videoInfo[index];
     player.loadVideoById(song[1]);
-    document.getElementsByTagName("title")[0].innerHTML + song[0];
+    document.getElementsByTagName("title")[0].innerHTML = pageTitle + " - " + song[0];
 }
 
 function onPlayerReady(event) {
@@ -43,6 +59,34 @@ function main() {
     }
 }
 
+function previousSong() {
+    nextSongs.splice(0,0,currentSong);
+    currentSong = previousSongs[0];
+    player.loadVideoById(videoInfo[previousSongs[0]][1]);
+    document.getElementsByTagName("title")[0].innerHTML = pageTitle + " - " + videoInfo[previousSongs[0]][0];
+    previousSongs.splice(0, 1);
+}
+
+function playToggle() {
+    if(player.getPlayerState() == 1) {
+        player.pauseVideo();
+        document.getElementById("playButton").innerHTML = "▶";
+    }
+    else if(player.getPlayerState() == 2) {
+        player.playVideo();
+        document.getElementById("playButton").innerHTML = "❚❚";
+    }
+}
+
+function nextSong() {
+    if(nextSongs.length == 0) {
+        playSong(Math.floor(Math.random()*videoInfo.length));
+    }
+    else {
+        playSong(nextSongs[0][1]);
+    }
+}
+
 function searchSong() {
     if(apiReady && spreadsheetReady) {
         name = document.getElementById("searchField").value.toLowerCase();
@@ -59,6 +103,10 @@ function searchSong() {
     }
 }
 
+function getIdFromUrl(videoUrl) {
+    return(videoUrl.substring(videoUrl.indexOf("v=")+2));
+}
+
 function init() {
     Tabletop.init( { key: spreadsheetUrl,
         callback: function(data, tabletop) { 
@@ -67,7 +115,7 @@ function init() {
                 if(link.indexOf("youtube.com") != -1) {
                     video = []
                     video.push(data[i]["SONG NAME"]);
-                    video.push(link.substring(link.indexOf("v=")+2));
+                    video.push(getIdFromUrl(link));
                     videoInfo.push(video);
                 }
             }
