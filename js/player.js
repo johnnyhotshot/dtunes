@@ -96,7 +96,7 @@ function searchSong() {
         name = document.getElementById("searchField").value.toLowerCase();
         console.log("Searching for " + name);
         for(var i = 0; i < videoInfo.length; i++) {
-            if(name == videoInfo[i][0].toLowerCase()) {
+            if(name == videoInfo[i][0].toLowerCase().trim()) {
                 document.getElementById("searchMessage").innerHTML = "";
                 name = document.getElementById("searchField").value = "";
                 player.loadVideoById(videoInfo[i][1]);
