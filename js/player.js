@@ -26,6 +26,7 @@ function onPlayerReady(event) {
 
 function onPlayerStateChange(event) {
     if(event.data == 0) {
+        console.log("New video");
         player.loadVideoById(videoIDs[Math.floor(Math.random()*videoIDs.length)]);
     }
 }
