@@ -93,7 +93,7 @@ function nextSong() {
 
 function searchSong() {
     if(apiReady && spreadsheetReady) {
-        name = document.getElementById("searchField").value.toLowerCase();
+        name = document.getElementById("searchField").value.toLowerCase().trim();
         console.log("Searching for " + name);
         for(var i = 0; i < videoInfo.length; i++) {
             if(name == videoInfo[i][0].toLowerCase().trim()) {
