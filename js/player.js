@@ -25,8 +25,8 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
-    if(event.player.getPlayerState() == 0) {
-        event.player.loadVideoById(videoIDs[Math.floor(Math.random()*videoIDs.length)]);
+    if(event.data == 0) {
+        player.loadVideoById(videoIDs[Math.floor(Math.random()*videoIDs.length)]);
     }
 }
 
