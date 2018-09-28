@@ -67,9 +67,7 @@ function previousSong() {
     player.loadVideoById(videoInfo[previousSongs[0]][1]);
     document.getElementsByTagName("title")[0].innerHTML = pageTitle + " - " + videoInfo[previousSongs[0]][0];
     previousSongs.splice(0, 1);
-    if(player.getPlayerState() == 2) {
-        document.getElementById("playButton").innerHTML = "❚❚";
-    }
+    document.getElementById("playButton").innerHTML = "❚❚";
 }
 
 function playToggle() {
@@ -90,9 +88,7 @@ function nextSong() {
     else {
         playSong(nextSongs[0][1]);
     }
-    if(player.getPlayerState() == 2) {
-        document.getElementById("playButton").innerHTML = "❚❚";
-    }
+    document.getElementById("playButton").innerHTML = "❚❚";
 }
 
 function searchSong() {
