@@ -1,6 +1,6 @@
 var spreadsheetUrl = "https://docs.google.com/spreadsheets/d/15_NsP5AlkPqzaT2CEZMx_MWdv1_myKxksnNYMEbhT-4/edit?usp=sharing";
 
-var videoIDs = [];
+var videoInfo = [];
 
 var apiReady = false, spreadsheetReady = false;
 
@@ -12,7 +12,7 @@ function onYouTubeIframeAPIReady() {
 
 function setupPlayer() {
     player = new YT.Player('player', {
-        videoId: videoIDs[0],
+        videoId: videoInfo[Math.floor(Math.random()*videoInfo.length)][1],
         events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
@@ -27,14 +27,29 @@ function onPlayerReady(event) {
 function onPlayerStateChange(event) {
     if(event.data == 0) {
         console.log("New video");
-        player.loadVideoById(videoIDs[Math.floor(Math.random()*videoIDs.length)]);
+        player.loadVideoById(videoInfo[Math.floor(Math.random()*videoInfo.length)][1]);
     }
 }
 
 function main() {
     if(apiReady && spreadsheetReady) {
         setupPlayer();
-        console.log(videoIDs);
+    }
+}
+
+function searchSong() {
+    if(apiReady && spreadsheetReady) {
+        name = document.getElementById("searchField").value.toLowerCase();
+        console.log("Searching for " + name);
+        for(var i = 0; i < videoInfo.length; i++) {
+            if(name == videoInfo[i][0].toLowerCase()) {
+                document.getElementById("searchMessage").innerHTML = "";
+                name = document.getElementById("searchField").value = "";
+                player.loadVideoById(videoInfo[i][1]);
+                return;
+            }
+        }
+        document.getElementById("searchMessage").innerHTML = "No song with the name " + name + " was found.";
     }
 }
 
@@ -44,7 +59,10 @@ function init() {
             for (var i = 0; i <     data.length; i++) {
                 let link = data[i]["LINK 1"];
                 if(link.indexOf("youtube.com") != -1) {
-                    videoIDs.push(link.substring(link.indexOf("v=")+2));
+                    video = []
+                    video.push(data[i]["SONG NAME"]);
+                    video.push(link.substring(link.indexOf("v=")+2));
+                    videoInfo.push(video);
                 }
             }
             spreadsheetReady = true;
