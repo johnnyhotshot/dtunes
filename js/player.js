@@ -1,7 +1,7 @@
 var spreadsheetUrl = "https://docs.google.com/spreadsheets/d/15_NsP5AlkPqzaT2CEZMx_MWdv1_myKxksnNYMEbhT-4/edit?usp=sharing";
 
 var videoInfo = [];
-
+var pageTitle = document.getElementsByTagName("title")[0].innerHTML;
 var apiReady = false, spreadsheetReady = false;
 
 var player;
@@ -20,14 +20,20 @@ function setupPlayer() {
     });
 }
 
+function playSong(index) {
+    song = videoInfo[index];
+    player.loadVideoById(song[1]);
+    document.getElementsByTagName("title")[0].innerHTML + song[0];
+}
+
 function onPlayerReady(event) {
-    event.target.playVideo();
+    playSong(Math.floor(Math.random()*videoInfo.length));
 }
 
 function onPlayerStateChange(event) {
     if(event.data == 0) {
         console.log("New video");
-        player.loadVideoById(videoInfo[Math.floor(Math.random()*videoInfo.length)][1]);
+        playSong(Math.floor(Math.random()*videoInfo.length));
     }
 }
 
