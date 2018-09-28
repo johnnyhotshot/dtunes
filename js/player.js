@@ -1,9 +1,11 @@
 var spreadsheetUrl = "https://docs.google.com/spreadsheets/d/15_NsP5AlkPqzaT2CEZMx_MWdv1_myKxksnNYMEbhT-4/edit?usp=sharing";
 
+//Information Variables
 var videoInfo = [];
 var pageTitle = document.getElementsByTagName("title")[0].innerHTML;
 var apiReady = false, spreadsheetReady = false;
 
+//Song Queue Variables
 var previousSongs = [];
 var currentSong = -1;
 var nextSongs = [];
